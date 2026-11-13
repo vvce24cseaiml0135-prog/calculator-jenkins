@@ -44,7 +44,7 @@ pipeline {
         }
 
         failure {
-            echo '❌ CI Pipeline broken. Check console logs for build failures or breaking test regressions.'
+            echo '❌ CI Pipeline broken. Check console logs for build failures or breaking test regressions. and it is not working correctly'
         }
     }
 }
