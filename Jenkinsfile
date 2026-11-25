@@ -1,12 +1,13 @@
-
 pipeline {
     agent any
-
-    // Use tool names configured in Jenkins
+    
+    
+    // Use tools Name configured in Jenkins
     tools {
         jdk 'JDK 21'
         maven 'Maven-3.10'
     }
+
 
     stages {
         stage('SCM Synchronization') {
@@ -28,7 +29,6 @@ pipeline {
                 echo '⚙️ Compiling class layers and verifying test logic stability...'
                 bat 'mvn clean package'
             }
-
             post {
                 always {
                     echo '📊 Publishing Unit Test trends to Jenkins Dashboard...'
@@ -36,15 +36,25 @@ pipeline {
                 }
             }
         }
+  
+
+    stage('SonarQube Analysis') {
+            steps {
+                echo 'Starting SonarQube analysis'
+                withSonarQubeEnv('SonarQube-Local') {
+                    bat 'mvn sonar:sonar'
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo '✅ CI Pipeline completed flawlessly! Code stability confirmed.'
+            echo 'Build and SonarQube analysis completed!'
         }
-
         failure {
-            echo '❌ CI Pipeline broken. Check console logs for build failures or breaking test regressions. and it is not working correctly'
+            echo 'Pipeline failed. Check Console Output.'
         }
     }
+
 }
